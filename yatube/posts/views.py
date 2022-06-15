@@ -5,6 +5,7 @@ from .forms import PostForm, CommentForm
 from .utils import get_page_context
 from django.views.decorators.cache import cache_page
 
+
 @cache_page(20, key_prefix="index_page")
 def index(request):
 
@@ -86,6 +87,7 @@ def post_edit(request, post_id):
                       {'form': form, 'username': request.user,
                        'is_edit': True})
 
+
 @login_required
 def add_comment(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -96,6 +98,7 @@ def add_comment(request, post_id):
         comment.post = post
         comment.save()
     return redirect('posts:post_detail', post_id=post_id)
+
 
 @login_required
 def follow_index(request):

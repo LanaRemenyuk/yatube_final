@@ -24,6 +24,7 @@ small_gif = (
     b'\x0A\x00\x3B'
 )
 
+
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class PostFormsTests(TestCase):
     @classmethod
@@ -149,7 +150,3 @@ class PostFormsTests(TestCase):
                 author=PostFormsTests.user,
                 post=self.post
             ).exists())
-
-
-
-

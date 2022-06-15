@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class PubDateModel(models.Model):
     """Абстрактная модель. Добавляет дату создания."""
     pub_date = models.DateTimeField(
@@ -9,3 +10,4 @@ class PubDateModel(models.Model):
 
     class Meta:
         abstract = True
+        
