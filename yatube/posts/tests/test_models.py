@@ -93,8 +93,7 @@ class PostModelTest(TestCase):
         for value, expected in field_help_text.items():
             with self.subTest(value=value):
                 self.assertEqual(
-                group._meta.get_field(value).help_text, expected
-            )
+                    group._meta.get_field(value).help_text, expected)
 
     def test_verbose_name_comments(self):
         """verbose_name в полях Comment совпадает
@@ -123,5 +122,5 @@ class PostModelTest(TestCase):
         for value, expected in field_help_text.items():
             with self.subTest(value=value):
                 self.assertEqual(
-                comment._meta.get_field(value).help_text, expected
-            )
+                    comment._meta.get_field(value).help_text, expected
+                )

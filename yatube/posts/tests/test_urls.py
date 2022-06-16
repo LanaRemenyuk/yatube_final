@@ -72,7 +72,6 @@ class PostsURLTests(TestCase):
         self.assertRedirects(response, ('/auth/login/?next=/posts/1/edit/'))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-
     def test_post_detail_url_redirect_anonymous(self):
         """Страница /posts/<post_id>/edit/ перенаправляет не автора поста."""
         response = self.authorized_client.\
