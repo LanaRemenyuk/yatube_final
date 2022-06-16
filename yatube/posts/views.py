@@ -19,7 +19,7 @@ def index(request):
 def group_posts(request, slug):
     template = 'posts/group_list.html',
     group = get_object_or_404(Group, slug=slug)
-    post_list = group.posts.order_by('-pub_date')
+    post_list = group.posts
     context = {
         'group': group
     }
@@ -46,9 +46,10 @@ def profile(request, username):
 def post_detail(request, post_id):
     template = 'posts/post_detail.html'
     post = get_object_or_404(Post, id=post_id)
+    form = CommentForm()
     context = {
         'post': post,
-        'form': CommentForm(request.POST or None),
+        'form': form,
         'switched_to_post_detail': True
     }
     return render(request, template, context)
@@ -124,5 +125,7 @@ def profile_follow(request, username):
 def profile_unfollow(request, username):
     follower = request.user
     following = get_object_or_404(User, username=username)
-    follower.follower.filter(author=following).delete()
+    followed = Follow.objects.filter(user=follower, author=following)
+    if followed.exists():
+        followed.delete()
     return redirect('posts:profile', username=username)

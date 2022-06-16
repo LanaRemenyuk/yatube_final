@@ -55,6 +55,9 @@ class PostsURLTests(TestCase):
         response = self.authorized_client.get('/create/')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
+        response = self.authorized_client.get('/follow/')
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
     # Проверяем страницы, доступные только автору
     def test_pages_exists_at_desired_location_for_author(self):
         """Страница доступна автору"""
@@ -69,13 +72,33 @@ class PostsURLTests(TestCase):
         self.assertRedirects(response, ('/auth/login/?next=/posts/1/edit/'))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
+
     def test_post_detail_url_redirect_anonymous(self):
-        """Страница /posts/<post_id>/edit/ перенаправляет не автора поста.
-        """
+        """Страница /posts/<post_id>/edit/ перенаправляет не автора поста."""
         response = self.authorized_client.\
             get(f'/posts/{self.post.id}/edit/')
         self.assertRedirects(response, reverse(
             'posts:index'))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
+    def test_page_redirects_comment_follow_unfollow(self):
+        """Страницы перенаправляют авторизованных пользователей."""
+        response = self.authorized_client. \
+            get(f'/posts/{self.post.id}/comment/')
+        self.assertRedirects(response, reverse(
+            'posts:post_detail', args={self.post.id}))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
+        response = self.authorized_client. \
+            get(f'/profile/{self.user}/follow/')
+        self.assertRedirects(response, reverse(
+            'posts:profile', args={self.user}))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
+        response = self.authorized_client. \
+            get(f'/profile/{self.user}/unfollow/')
+        self.assertRedirects(response, reverse(
+            'posts:profile', args={self.user}))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_public_urls_uses_correct_template(self):
@@ -86,6 +109,7 @@ class PostsURLTests(TestCase):
             f'/group/{self.group.slug}/': 'posts/group_list.html',
             f'/profile/{self.user}/': 'posts/profile.html',
             f'/posts/{self.post.id}/': 'posts/post_detail.html',
+            "/unexisting_page/": "posts/core/404.html"
         }
 
         for address, template in url_names_for_templates.items():
@@ -100,7 +124,8 @@ class PostsURLTests(TestCase):
         # Шаблоны по адресам
         url_names_for_templates = {
             f'/posts/{self.post.id}/edit/': 'posts/create_post.html',
-            '/create/': 'posts/create_post.html'
+            '/create/': 'posts/create_post.html',
+            '/follow/': 'posts/follow.html'
         }
         for address, template in url_names_for_templates.items():
             with self.subTest(address=address):

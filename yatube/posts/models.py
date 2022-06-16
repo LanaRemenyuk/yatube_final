@@ -60,15 +60,20 @@ class Comment(PubDateModel):
     post = models.ForeignKey(
         Post,
         related_name='comments',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='Комментарии к посту',
+        help_text='Комментарии к посту'
     )
     author = models.ForeignKey(
         User,
         related_name='comments',
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        verbose_name='Автор комментария',
+        help_text='Автор комментария'
     )
-    text = models.TextField('text', help_text='comment text')
+    text = models.TextField('text',
+                            help_text='Текст комментария')
 
     class Meta:
         ordering = ['-pub_date']
@@ -81,16 +86,17 @@ class Follow(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=CASCADE,
-        related_name="follower"
+        related_name="follower",
+        verbose_name='Подписчик',
+        help_text='Подписчик'
     )
     author = models.ForeignKey(
         User,
         on_delete=CASCADE,
-        related_name="following"
+        related_name="following",
+        verbose_name='Блогер',
+        help_text='На Вас подписаны'
     )
-
-    def __str__(self):
-        return self.text
 
     class Meta:
         constraints = [
