@@ -111,7 +111,7 @@ class PostModelTest(TestCase):
                 )
 
     def test_help_text_group_comments(self):
-        """ help_text в полях Group совпадает
+        """ help_text в полях Comment совпадает
         с ожиданием """
         comment = PostModelTest.comment
         field_help_text = {

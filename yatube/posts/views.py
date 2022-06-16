@@ -19,7 +19,8 @@ def index(request):
 def group_posts(request, slug):
     template = 'posts/group_list.html',
     group = get_object_or_404(Group, slug=slug)
-    post_list = group.posts
+    post_list = (Post.objects.filter
+                 (group=group))
     context = {
         'group': group
     }
