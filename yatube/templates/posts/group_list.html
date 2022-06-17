@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {%block title %}Записи сообщества {{ group }} | Yatube{%endblock%}
-{%block content%}
-  <div class="container py-5">
-    <h1>{{ group }}</h1>
-      <p> {{ group.description }} </p>
-        {% for post in page_obj %}
-          {% include 'posts/includes/post_cycle.html' %}
-        {% endfor %}
-        {% include 'posts/includes/paginator.html' %}
-{% endblock %}
+  {%block content%}
+    <div class="container py-5">
+      <h1>{{ group }}</h1>
+        <p> {{ group.description }} </p>
+          {% for post in page_obj %}
+            {% include 'posts/includes/post_cycle.html' %}
+          {% endfor %}
+          {% include 'posts/includes/paginator.html' %}
+  {% endblock %}
