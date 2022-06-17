@@ -76,6 +76,12 @@ class PostPagesTests(TestCase):
         response = self.authorized_client.get(postdetail)
         test_post = response.context['post']
         self.check_post_detail(test_post)
+        form_fields = {
+            'text': forms.fields.CharField}
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                comment_form = response.context.get('form').fields.get(value)
+                self.assertIsInstance(comment_form, expected)
 
     def check_post_detail(self, post):
         self.assertEqual(post.text, self.post.text)
